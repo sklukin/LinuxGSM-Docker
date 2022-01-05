@@ -73,18 +73,24 @@ apt install -y \
     wget \
     xz-utils \
     zlib1g \
+    tar \
+    python3 \
     zlib1g:i386; \
 apt-get clean; \
 rm -rf /var/lib/apt/lists/*
 
+
 ## linuxgsm.sh
 RUN set -ex; \
-wget https://linuxgsm.com/dl/linuxgsm.sh
+wget -O linuxgsm.sh https://linuxgsm.sh
+## wget https://linuxgsm.com/dl/linuxgsm.sh
 
 ## user config
 RUN set -ex; \
 groupadd -g 750 -o linuxgsm; \
 adduser --uid 750 --disabled-password --gecos "" --ingroup linuxgsm linuxgsm; \
+usermod -a -G sudo linuxgsm; \
+echo "linuxgsm ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers; \
 chown linuxgsm:linuxgsm /linuxgsm.sh; \
 chmod +x /linuxgsm.sh; \
 cp /linuxgsm.sh /home/linuxgsm/linuxgsm.sh; \
@@ -103,6 +109,8 @@ ENV TERM=xterm
 
 ## Docker Details
 ENV PATH=$PATH:/home/linuxgsm
+
+RUN ./linuxgsm.sh mcbserver
 
 COPY entrypoint.sh /entrypoint.sh
 
