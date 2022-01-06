@@ -75,6 +75,7 @@ apt install -y \
     zlib1g \
     tar \
     python3 \
+    sudo \
     zlib1g:i386; \
 apt-get clean; \
 rm -rf /var/lib/apt/lists/*
